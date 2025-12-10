@@ -1,10 +1,139 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Introduction to hyper text markup</title>
-    </head>
-    <body>
-      hello   iam mokshith this is my 1st website i am creating
-      hehe hehe hello u can vist scrath from here scrath mit edu
-       🤺🤺  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #676767;
+        }
+        canvas {
+            border: 2px solid #fff;
+            background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 100%);
+            display: block;
+        }
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-family: Arial;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">Score: <span id="score">0</span> | Use Arrow Keys to Move :)</div>
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('3d');
+        
+        const car = {
+            x: canvas.width / 2 - 25,
+            y: canvas.height - 80,
+            width: 50,
+            height: 70,
+            speed: 5
+        };
+        
+        let obstacles = [];
+        let score = 0;
+        let gameRunning = true;
+        const keys = {};
+        
+        document.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+        });
+        
+        function drawCar() {
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(car.x, car.y, car.width, car.height);
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(car.x + 10, car.y + 10, 15, 15);
+            ctx.fillRect(car.x + 25, car.y + 10, 15, 15);
+        }
+        
+        function createObstacle() {
+            const width = 50;
+            const x = Math.random() * (canvas.width - width);
+            obstacles.push({
+                x: x,
+                y: -60,
+                width: width,
+                height: 60,
+                speed: 3 + score * 0.1
+            });
+        }
+        
+        function drawObstacles() {
+            ctx.fillStyle = '#0000FF';
+            obstacles.forEach(obs => {
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                ctx.fillStyle = '#FFD700';
+                ctx.fillRect(obs.x + 10, obs.y + 10, 15, 15);
+                ctx.fillRect(obs.x + 25, obs.y + 10, 15, 15);
+                ctx.fillStyle = '#0000FF';
+            });
+        }
+        
+        function updateGame() {
+            if (keys['ArrowLeft'] && car.x > 0) car.x -= car.speed;
+            if (keys['ArrowRight'] && car.x + car.width < canvas.width) car.x += car.speed;
+            
+            obstacles.forEach((obs, index) => {
+                obs.y += obs.speed;
+                
+                if (obs.y > canvas.height) {
+                    obstacles.splice(index, 1);
+                    score++;
+                    document.getElementById('score').textContent = score;
+                }
+                
+                if (checkCollision(car, obs)) {
+                    gameRunning = false;
+                    alert(`Game Over! Final Score: ${score}`);
+                    location.reload();
+                }
+            });
+        }
+        
+        function checkCollision(rect1, rect2) {
+            return rect1.x < rect2.x + rect2.width &&
+                   rect1.x + rect1.width > rect2.x &&
+                   rect1.y < rect2.y + rect2.height &&
+                   rect1.y + rect1.height > rect2.y;
+        }
+        
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (gameRunning) {
+                updateGame();
+                drawCar();
+                drawObstacles();
+                
+                if (Math.random() < 0.02) {
+                    createObstacle();
+                }
+            }
+            
+            requestAnimationFrame(gameLoop);
+        }
+        
+        gameLoop(55);
+    </script>
+</body>
 </html>
