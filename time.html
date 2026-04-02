@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today Calendar - Digital Clock</title>
+    <style>
+        /* Basic Styling to make it look like a Digital Clock */
+        body {
+            background-color: #1a1a1a;
+            color: #00ff41; /* Digital Green */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #clock-container {
+            text-align: center;
+            border: 2px solid #333;
+            padding: 40px;
+            border-radius: 15px;
+            background: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+        #date-display { font-size: 1.5rem; margin-bottom: 10px; color: #aaa; }
+        #time-display { font-size: 4rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="clock-container">
+        <div id="date-display">Loading Date...</div>
+        <div id="time-display">00:00:00</div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+
+            // 1. Data for Date, Month, Year, and Day
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            
+            const dayName = days[now.getDay()];
+            const monthName = months[now.getMonth()];
+            const date = now.getDate();
+            const year = now.getFullYear();
+
+            // 2. Data for Time
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+
+            // Convert to 12-hour format
+            hours = hours % 12 || 12;
+
+            // 3. Displaying the information in the HTML
+            document.getElementById('date-display').innerHTML = 
+                `${dayName}, ${monthName} ${date}, ${year}`;
+            
+            document.getElementById('time-display').innerHTML = 
+                `${hours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        // Run the function every 1 second (1000ms)
+        setInterval(updateClock, 1000);
+
+        // Run immediately on page load
+        updateClock();
+    </script>
+
+</body>
+</html>
