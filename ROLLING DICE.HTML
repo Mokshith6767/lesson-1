@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dice Roller</title>
+<style>
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #f0f0f0; }
+    .dice { font-size: 100px; margin: 20px; transition: transform 0.5s; }
+    .roll-animation { animation: roll 0.5s linear; }
+    @keyframes roll {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+    <div class="dice" id="dice">&#9856;</div> <!-- Initial die face: 1 -->
+    <button onclick="rollDice()">Roll Dice</button>
+
+<script>
+    function rollDice() {
+        const dice = document.getElementById('dice');
+        const faces = ['&#9856;', '&#9857;', '&#9858;', '&#9859;', '&#9860;', '&#9861;'];
+        
+        // Add animation class
+        dice.classList.add('roll-animation');
+        
+        // Remove animation class after 0.5s
+        setTimeout(() => {
+            dice.classList.remove('roll-animation');
+            // Generate random number 1-6
+            const randomNumber = Math.floor(Math.random() * 6);
+            dice.innerHTML = faces[randomNumber];
+        }, 500);
+    }
+</script>
+</body>
+</html>
