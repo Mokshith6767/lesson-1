@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rolling Dice App</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #f0f0f0; }
+        #number { font-size: 80px; font-weight: bold; color: #333; margin-bottom: 20px; min-height: 100px; }
+        button { padding: 10px 25px; font-size: 18px; cursor: pointer; border-radius: 5px; border: none; background-color: #007bff; color: white; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <div id="number">1</div>
+    <button id="diceBtn">Stop</button>
+
+    <script>
+        const numberDisplay = document.getElementById('number');
+        const btn = document.getElementById('diceBtn');
+        
+        let intervalId = null;
+        let clickCount = 0; // Starts at 0 (even)
+
+        function startRolling() {
+            intervalId = setInterval(() => {
+                numberDisplay.textContent = Math.floor(Math.random() * 6) + 1;
+            }, 100);
+            btn.textContent = "Stop (Odd Click)";
+        }
+
+        function stopRolling() {
+            clearInterval(intervalId);
+            intervalId = null;
+            btn.textContent = "Start (Even Click)";
+        }
+
+        btn.addEventListener('click', () => {
+            clickCount++;
+            
+            // Logic: Odd click stops, Even click starts
+            if (clickCount % 2 !== 0) {
+                stopRolling();
+            } else {
+                startRolling();
+            }
+        });
+
+        // Initialize the app in a rolling state
+        startRolling();
+    </script>
+</body>
+</html>
