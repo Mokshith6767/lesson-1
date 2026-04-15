@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        /* Container for the slider */
+        .slider-container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden; /* Hides images outside the box */
+            border: 5px solid #f28d35;
+            border-radius: 10px;
+        }
+
+        /* The moving part of the slider */
+        .slider {
+            display: flex;
+            width: 100%;
+            animation: slide 10s infinite; /* Cycles through images */
+        }
+
+        .slider img {
+            width: 100%; /* Each image takes full width */
+            flex-shrink: 0;
+        }
+
+        /* Animation logic */
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            33% { transform: translateX(-100%); }
+            66% { transform: translateX(-200%); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Food Image Slider</h2>
+    <div class="slider-container">
+        <div class="slider">
+            <!-- Add your food image URLs here -->
+            <img src="pizza.jpg" alt="Delicious Pizza">
+            <img src="burger.jpg" alt="Juicy Burger">
+            <img src="pasta.jpg" alt="Creamy Pasta">
+            <!-- To add more, just insert another <img> tag below -->
+        </div>
+    </div>
+
+</body>
+</html>
